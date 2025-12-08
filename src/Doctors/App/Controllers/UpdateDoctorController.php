@@ -14,8 +14,11 @@ use Lightit\Doctors\Domain\Models\Doctor;
 #[Group('Doctors')]
 final readonly class UpdateDoctorController
 {
-    public function __invoke(Doctor $doctor, UpsertDoctorRequest $request, UpdateDoctorAction $updateDoctorAction): JsonResponse
-    {
+    public function __invoke(
+        Doctor $doctor,
+        UpsertDoctorRequest $request,
+        UpdateDoctorAction $updateDoctorAction,
+    ): JsonResponse {
         $doctor = $updateDoctorAction->execute($doctor, $request->toDto());
 
         return DoctorResource::make($doctor)

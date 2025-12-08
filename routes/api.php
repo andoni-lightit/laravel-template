@@ -50,7 +50,6 @@ Route::prefix('users')
 |--------------------------------------------------------------------------
 */
 Route::prefix('doctors')
-    ->middleware([])
     ->group(static function (): void {
         Route::get('/{doctor}', GetDoctorController::class)
             ->withTrashed()

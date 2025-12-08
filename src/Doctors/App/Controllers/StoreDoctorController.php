@@ -15,9 +15,9 @@ final readonly class StoreDoctorController
 {
     public function __invoke(UpsertDoctorRequest $request, StoreDoctorAction $storeDoctorAction): JsonResponse
     {
-        $user = $storeDoctorAction->execute($request->toDto());
+        $doctor = $storeDoctorAction->execute($request->toDto());
 
-        return DoctorResource::make($user)
+        return DoctorResource::make($doctor)
             ->response()
             ->setStatusCode(JsonResponse::HTTP_CREATED);
     }

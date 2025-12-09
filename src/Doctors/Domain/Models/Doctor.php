@@ -31,6 +31,9 @@ class Doctor extends Model
 {
     protected $guarded = ['id'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Lightit\Clinics\Domain\Models\Clinic, $this, \Illuminate\Database\Eloquent\Relations\Pivot>
+     */
     public function clinics(): BelongsToMany
     {
         return $this->belongsToMany(Clinic::class)->withTimestamps();

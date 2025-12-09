@@ -11,7 +11,7 @@ use Lightit\Doctors\App\Resources\DoctorResource;
 use Lightit\Doctors\Domain\Actions\StoreDoctorAction;
 
 #[Group('Doctors')]
-final readonly class StoreDoctorController
+final class StoreDoctorController
 {
     public function __invoke(UpsertDoctorRequest $request, StoreDoctorAction $storeDoctorAction): JsonResponse
     {

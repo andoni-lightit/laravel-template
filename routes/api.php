@@ -49,15 +49,13 @@ Route::prefix('users')
 | Doctors Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('doctors')
-    ->group(static function (): void {
-        Route::get('/', ListDoctorController::class);
-        Route::get('/{doctor}', GetDoctorController::class)
-            ->withTrashed()
-            ->whereNumber('doctor');
-        Route::delete('/{doctor}', DeleteDoctorController::class)
-            ->whereNumber('doctor');
-        Route::put('/{doctor}', UpdateDoctorController::class)
-            ->whereNumber('doctor');
-        Route::post('/', StoreDoctorController::class);
-    });
+Route::prefix('doctors')->group(static function (): void {
+    Route::get('/', ListDoctorController::class);
+    Route::post('/', StoreDoctorController::class);
+
+    Route::prefix('{doctor}')->group(static function (): void {
+        Route::get('/', GetDoctorController::class)->withTrashed();
+        Route::put('/', UpdateDoctorController::class);
+        Route::delete('/', DeleteDoctorController::class);
+    })->whereNumber('doctor');
+});

@@ -16,8 +16,8 @@ class ListDoctorAction
     public function execute(): LengthAwarePaginator
     {
         return QueryBuilder::for(Doctor::class)
-            ->allowedFilters(['email'])
-            ->orderBy('id', 'desc')
+            ->allowedFilters(['name'])
+            ->orderByDesc('id')
             ->paginate();
     }
 }

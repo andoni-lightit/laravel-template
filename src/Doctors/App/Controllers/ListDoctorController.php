@@ -10,7 +10,7 @@ use Lightit\Doctors\App\Resources\DoctorResource;
 use Lightit\Doctors\Domain\Actions\ListDoctorAction;
 
 #[Group('Doctors')]
-final readonly class ListDoctorController
+final class ListDoctorController
 {
     public function __invoke(
         ListDoctorAction $action,

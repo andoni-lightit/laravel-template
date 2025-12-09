@@ -23,7 +23,7 @@ class ClinicFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'address' => fake()->address(),
+            'address' => fake()->company(),
         ];
     }
 }

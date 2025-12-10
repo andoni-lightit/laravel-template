@@ -7,7 +7,6 @@ namespace Lightit\Clinics\App\Controllers;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\JsonResponse;
 use Lightit\Clinics\App\Resources\ClinicResource;
-use Lightit\Clinics\App\Resources\DoctorResource;
 use Lightit\Clinics\Domain\Models\Clinic;
 
 #[Group('Clinics')]

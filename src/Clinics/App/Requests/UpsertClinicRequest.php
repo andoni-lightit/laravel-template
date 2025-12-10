@@ -10,6 +10,7 @@ use Lightit\Clinics\Domain\DataTransferObjects\ClinicDto;
 class UpsertClinicRequest extends FormRequest
 {
     public const string NAME = 'name';
+
     public const string ADDRESS = 'address';
 
     /**

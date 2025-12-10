@@ -11,7 +11,6 @@ use Lightit\Clinics\App\Resources\ClinicResource;
 use Lightit\Clinics\Domain\Actions\UpdateClinicAction;
 use Lightit\Clinics\Domain\Models\Clinic;
 
-
 #[Group('Clinics')]
 final class UpdateClinicController
 {

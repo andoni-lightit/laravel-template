@@ -20,13 +20,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         UserFactory::new()->createMany(35);
-        $doctors =  DoctorFactory::new()->createMany(15);
         $clinics = ClinicFactory::new()->createMany(10);
 
-        foreach ($doctors as $doctor) {
-            $doctor->clinics()->attach(
-                $clinics->random(rand(1, 3))->pluck('id')->toArray()
-            );
-        }
+        DoctorFactory::new()->createMany(15)
+            ->each(function ($doctor) use ($clinics) {
+                $doctor->clinics()->attach($clinics->random());
+            });
     }
 }

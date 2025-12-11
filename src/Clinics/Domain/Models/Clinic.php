@@ -32,7 +32,7 @@ class Clinic extends Model
     protected $guarded = ['id'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\Lightit\Doctors\Domain\Models\Doctor, $this, \Illuminate\Database\Eloquent\Relations\Pivot>
+     * @return BelongsToMany<Doctor, $this>
      */
     public function doctors(): BelongsToMany
     {

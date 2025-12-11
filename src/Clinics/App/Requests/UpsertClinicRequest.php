@@ -13,6 +13,8 @@ class UpsertClinicRequest extends FormRequest
 
     public const string ADDRESS = 'address';
 
+    public const string DOCTOR_IDS = 'doctor_ids';
+
     /**
      * @return array<string, mixed>
      */
@@ -21,6 +23,8 @@ class UpsertClinicRequest extends FormRequest
         return [
             self::NAME => ['required', 'string', 'min:4', 'max:80'],
             self::ADDRESS => ['nullable', 'string', 'min:4', 'max:120'],
+            self::DOCTOR_IDS => ['array'],
+            self::DOCTOR_IDS . '.*' => ['integer', 'exists:doctors,id'],
         ];
     }
 
@@ -28,7 +32,8 @@ class UpsertClinicRequest extends FormRequest
     {
         return new ClinicDto(
             name: $this->string(self::NAME)->toString(),
-            address: $this->string(self::ADDRESS)->toString()
+            address: $this->string(self::ADDRESS)->toString(),
+            doctorIds: $this->input(self::DOCTOR_IDS, []),
         );
     }
 }

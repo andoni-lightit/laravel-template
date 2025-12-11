@@ -6,9 +6,13 @@ namespace Lightit\Clinics\Domain\DataTransferObjects;
 
 readonly class ClinicDto
 {
+    /**
+     * @param int[] $doctorIds
+     */
     public function __construct(
         public string $name,
-        public string $address,
+        public ?string $address,
+        public array $doctorIds = [],
     ) {
     }
 }

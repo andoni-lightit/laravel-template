@@ -7,7 +7,7 @@ namespace Lightit\Clinics\Domain\DataTransferObjects;
 readonly class ClinicDto
 {
     /**
-     * @param int[] $doctorIds
+     * @param array<int, int> $doctorIds
      */
     public function __construct(
         public string $name,

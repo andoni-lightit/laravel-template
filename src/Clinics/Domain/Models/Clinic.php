@@ -13,6 +13,7 @@ use Lightit\Doctors\Domain\Models\Doctor;
  *
  * @property int                             $id
  * @property string                          $name
+ * @property string|null                     $address
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *

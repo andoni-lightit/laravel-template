@@ -12,7 +12,7 @@ class UpdateClinicAction
 {
     public function execute(Clinic $clinic, ClinicDto $data): Clinic
     {
-        return DB::transaction(function () use ($clinic, $data) {
+        return DB::transaction(function () use ($clinic, $data): Clinic {
             $clinic->name = $data->name;
             $clinic->address = $data->address;
             $clinic->saveOrFail();
@@ -20,6 +20,7 @@ class UpdateClinicAction
             if (!empty($data->doctorIds)) {
                 $clinic->doctors()->sync($data->doctorIds);
             }
+
             return $clinic;
         });
     }

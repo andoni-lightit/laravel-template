@@ -12,7 +12,7 @@ class StoreClinicAction
 {
     public function execute(ClinicDto $data): Clinic
     {
-        return DB::transaction(function () use ($data) {
+        return DB::transaction(function () use ($data): Clinic {
             $clinic = new Clinic();
             $clinic->name = $data->name;
             $clinic->address = $data->address;
@@ -21,6 +21,7 @@ class StoreClinicAction
             if (!empty($data->doctorIds)) {
                 $clinic->doctors()->sync($data->doctorIds);
             }
+
             return $clinic;
         });
     }

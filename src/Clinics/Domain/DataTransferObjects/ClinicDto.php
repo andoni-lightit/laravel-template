@@ -11,7 +11,7 @@ readonly class ClinicDto
      */
     public function __construct(
         public string $name,
-        public ?string $address,
+        public string|null $address,
         public array $doctorIds = [],
     ) {
     }

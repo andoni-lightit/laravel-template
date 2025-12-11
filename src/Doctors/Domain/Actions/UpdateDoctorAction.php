@@ -12,8 +12,7 @@ class UpdateDoctorAction
 {
     public function execute(Doctor $doctor, DoctorDto $doctorDto): Doctor
     {
-        return DB::transaction(function () use ($doctor, $doctorDto) : Doctor
-        {
+        return DB::transaction(function () use ($doctor, $doctorDto): Doctor {
             $doctor->name = $doctorDto->name;
             $doctor->saveOrFail();
 

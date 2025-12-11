@@ -12,8 +12,7 @@ class StoreDoctorAction
 {
     public function execute(DoctorDto $doctorDto): Doctor
     {
-        return DB::transaction(function () use ($doctorDto) : Doctor
-        {
+        return DB::transaction(function () use ($doctorDto): Doctor {
             $doctor = new Doctor();
             $doctor->name = $doctorDto->name;
             $doctor->saveOrFail();

@@ -11,4 +11,3 @@ Route::get('/', static fn(): \Illuminate\Contracts\View\View|\Illuminate\Contrac
 
 Route::get('/login', static fn(): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory => view('welcome'))->name('login');
 
-

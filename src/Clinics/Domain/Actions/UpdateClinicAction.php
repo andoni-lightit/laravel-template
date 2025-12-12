@@ -9,10 +9,10 @@ use Lightit\Clinics\Domain\Models\Clinic;
 
 class UpdateClinicAction
 {
-    public function execute(Clinic $clinic, ClinicDto $clinicDto): Clinic
+    public function execute(Clinic $clinic, ClinicDto $data): Clinic
     {
-        $clinic->name = $clinicDto->name;
-        $clinic->address = $clinicDto->address;
+        $clinic->name = $data->name;
+        $clinic->address = $data->address;
         $clinic->saveOrFail();
 
         return $clinic;

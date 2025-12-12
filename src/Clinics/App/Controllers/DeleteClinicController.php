@@ -15,6 +15,6 @@ final class DeleteClinicController
     {
         $clinic->deleteOrFail();
 
-        return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
+        return response()->json(status: JsonResponse::HTTP_NO_CONTENT);
     }
 }

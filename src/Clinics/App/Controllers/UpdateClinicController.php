@@ -17,9 +17,9 @@ final class UpdateClinicController
     public function __invoke(
         Clinic $clinic,
         UpsertClinicRequest $request,
-        UpdateClinicAction $updateClinicAction,
+        UpdateClinicAction $action,
     ): JsonResponse {
-        $clinic = $updateClinicAction->execute($clinic, $request->toDto());
+        $clinic = $action->execute($clinic, $request->toDto());
 
         return ClinicResource::make($clinic)
             ->response();

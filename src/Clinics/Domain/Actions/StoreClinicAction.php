@@ -9,11 +9,11 @@ use Lightit\Clinics\Domain\Models\Clinic;
 
 class StoreClinicAction
 {
-    public function execute(ClinicDto $clinicDto): Clinic
+    public function execute(ClinicDto $data): Clinic
     {
         $clinic = new Clinic();
-        $clinic->name = $clinicDto->name;
-        $clinic->address = $clinicDto->address;
+        $clinic->name = $data->name;
+        $clinic->address = $data->address;
 
         $clinic->saveOrFail();
 

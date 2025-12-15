@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Lightit\Doctors\Domain\Actions;
 
+use Illuminate\Support\Facades\DB;
 use Lightit\Doctors\Domain\DataTransferObjects\DoctorDto;
 use Lightit\Doctors\Domain\Models\Doctor;
 
@@ -11,9 +12,15 @@ class UpdateDoctorAction
 {
     public function execute(Doctor $doctor, DoctorDto $doctorDto): Doctor
     {
-        $doctor->name = $doctorDto->name;
-        $doctor->saveOrFail();
+        return DB::transaction(function () use ($doctor, $doctorDto): Doctor {
+            $doctor->name = $doctorDto->name;
+            $doctor->saveOrFail();
 
-        return $doctor;
+            if ($doctorDto->clinicIds !== []) {
+                $doctor->clinics()->syncWithoutDetaching($doctorDto->clinicIds);
+            }
+
+            return $doctor->load('clinics');
+        });
     }
 }

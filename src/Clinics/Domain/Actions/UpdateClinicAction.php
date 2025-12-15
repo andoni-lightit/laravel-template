@@ -17,8 +17,8 @@ class UpdateClinicAction
             $clinic->address = $data->address;
             $clinic->saveOrFail();
 
-            if (!empty($data->doctorIds)) {
-                $clinic->doctors()->sync($data->doctorIds);
+            if (! empty($data->doctorIds)) {
+                $clinic->doctors()->syncWithoutDetaching($data->doctorIds);
             }
 
             return $clinic;

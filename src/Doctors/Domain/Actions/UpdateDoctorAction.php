@@ -19,6 +19,7 @@ class UpdateDoctorAction
             if ($doctorDto->clinicIds !== []) {
                 $doctor->clinics()->syncWithoutDetaching($doctorDto->clinicIds);
             }
+
             return $doctor->load('clinics');
         });
     }

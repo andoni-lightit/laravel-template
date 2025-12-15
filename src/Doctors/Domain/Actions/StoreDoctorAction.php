@@ -17,7 +17,7 @@ class StoreDoctorAction
             $doctor->name = $doctorDto->name;
             $doctor->saveOrFail();
 
-            if (! empty($doctorDto->clinicIds)) {
+            if ($doctorDto->clinicIds !== []) {
                 $doctor->clinics()->syncWithoutDetaching($doctorDto->clinicIds);
             }
 

@@ -17,10 +17,9 @@ class UpdateDoctorAction
             $doctor->saveOrFail();
 
             if ($doctorDto->clinicIds !== []) {
-                $doctor->clinics()->sync($doctorDto->clinicIds);
+                $doctor->clinics()->syncWithoutDetaching($doctorDto->clinicIds);
             }
-
-            return $doctor;
+            return $doctor->load('clinics');
         });
     }
 }

@@ -21,7 +21,7 @@ class StoreDoctorAction
                 $doctor->clinics()->syncWithoutDetaching($doctorDto->clinicIds);
             }
 
-            return $doctor;
+            return $doctor->load('clinics');
         });
     }
 }

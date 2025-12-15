@@ -18,12 +18,10 @@ class DoctorResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $this->load('clinics');
-
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'clinics' => ClinicResource::collection($this->clinics),
+            'clinics' => $this->whenLoaded('clinics', fn () => ClinicResource::collection($this->clinics)),
         ];
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Lightit\Appointments\Domain\Actions;
 
 use Carbon\CarbonImmutable;
-
+use Illuminate\Contracts\Database\Query\Builder;
 use Lightit\Appointments\Domain\DataTransferObjects\AppointmentDto;
 use Lightit\Appointments\Domain\Models\Appointment;
 use Lightit\Doctors\Domain\Models\Doctor;
@@ -31,11 +31,11 @@ class StoreAppointmentAction
         $appointment = new Appointment();
 
         /** @var int<0, max> $userId */
-        $userId = (int) $dto->userId;
+        $userId = $dto->userId;
         /** @var int<0, max> $doctorId */
-        $doctorId = (int) $dto->doctorId;
+        $doctorId = $dto->doctorId;
         /** @var int<0, max> $clinicId */
-        $clinicId = (int) $dto->clinicId;
+        $clinicId = $dto->clinicId;
 
         $appointment->user_id = $userId;
         $appointment->doctor_id = $doctorId;
@@ -51,7 +51,7 @@ class StoreAppointmentAction
     {
         $exists = Doctor::query()
             ->where('id', $doctorId)
-            ->whereHas('clinics', function ($q) use ($clinicId) {
+            ->whereHas('clinics', function (\Illuminate\Contracts\Database\Query\Builder $q) use ($clinicId): void {
                 $q->where('clinics.id', $clinicId);
             })
             ->exists();
@@ -64,7 +64,7 @@ class StoreAppointmentAction
     {
         $doctorOverlapping = Appointment::query()
             ->where('doctor_id', $dto->doctorId)
-            ->where(function ($query) use ($startsAt, $endsAt) {
+            ->where(function (Builder $query) use ($startsAt, $endsAt): void {
                 $query->where('starts_at', '<', $endsAt)
                     ->where('ends_at', '>', $startsAt);
             })
@@ -75,7 +75,7 @@ class StoreAppointmentAction
         }
         $patientOverlapping = Appointment::query()
             ->where('user_id', $dto->userId)
-            ->where(function ($query) use ($startsAt, $endsAt) {
+            ->where(function (Builder $query) use ($startsAt, $endsAt): void {
                 $query->where('starts_at', '<', $endsAt)
                     ->where('ends_at', '>', $startsAt);
             })

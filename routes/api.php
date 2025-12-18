@@ -29,6 +29,9 @@ use Lightit\Clinics\App\Controllers\{
     UpdateClinicController
 };
 
+use Lightit\Appointments\App\Controllers\{
+    StoreAppointmentController
+};
 
 
 /*
@@ -98,4 +101,13 @@ Route::prefix('clinics')->group(static function (): void {
         Route::put('/', UpdateClinicController::class);
         Route::delete('/', DeleteClinicController::class);
     })->whereNumber('clinic');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Appointment Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('appointments')->group(static function (): void {
+    Route::post('/', StoreAppointmentController::class);
 });

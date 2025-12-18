@@ -32,8 +32,6 @@ return new class extends Migration
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });
-
-        DB::statement("ALTER TABLE appointments ADD CONSTRAINT chk_appointments_times CHECK (ends_at > starts_at)");
     }
 
     public function down(): void

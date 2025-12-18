@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Lightit\Appointments\App\Requests;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Lightit\Appointments\Domain\DataTransferObjects\AppointmentDto;
@@ -29,19 +30,25 @@ class UpsertAppointmentRequest extends FormRequest
             self::USER_ID => ['required', 'integer', Rule::exists(User::class, 'id')],
             self::DOCTOR_ID => ['required', 'integer', Rule::exists(Doctor::class, 'id')],
             self::CLINIC_ID => ['required', 'integer', Rule::exists(Clinic::class, 'id')],
-            self::STARTS_AT => ['required', 'date', 'after_or_equal:now'],
-            self::ENDS_AT => ['required', 'date', 'after:' . self::STARTS_AT],
+            self::STARTS_AT => ['required', Rule::date()->after(CarbonImmutable::now())],
+            self::ENDS_AT => ['required', Rule::date()->after(self::STARTS_AT)],
         ];
     }
 
     public function toDto(): AppointmentDto
     {
+        /** @var \Illuminate\Support\Carbon $startsAt */
+        $startsAt = $this->date(self::STARTS_AT);
+
+        /** @var \Illuminate\Support\Carbon $endsAt */
+        $endsAt = $this->date(self::ENDS_AT);
+
         return new AppointmentDto(
             userId: $this->integer(self::USER_ID),
             doctorId: $this->integer(self::DOCTOR_ID),
             clinicId: $this->integer(self::CLINIC_ID),
-            startsAt: $this->string(self::STARTS_AT)->toString(),
-            endsAt: $this->string(self::ENDS_AT)->toString(),
+            startsAt: $startsAt->toImmutable(),
+            endsAt: $endsAt->toImmutable(),
         );
     }
 }

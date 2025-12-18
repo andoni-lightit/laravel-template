@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Lightit\Appointments\Domain\Actions;
 
 use Carbon\CarbonImmutable;
-use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Lightit\Appointments\Domain\DataTransferObjects\AppointmentDto;
 use Lightit\Appointments\Domain\Models\Appointment;
 use Lightit\Doctors\Domain\Models\Doctor;
@@ -18,13 +18,6 @@ class StoreAppointmentAction
         $startsAt = CarbonImmutable::parse($dto->startsAt);
         $endsAt = CarbonImmutable::parse($dto->endsAt);
 
-        if ($endsAt->lte($startsAt)) {
-            throw new RuntimeException('The appointment end time must be after the start time.');
-        }
-
-        if ($startsAt->isPast()) {
-            throw new RuntimeException('Appointments cannot be scheduled in the past.');
-        }
         $this->checkRelatedResources($dto->doctorId, $dto->clinicId);
         $this->checkOverlapping($dto, $startsAt, $endsAt);
 
@@ -51,8 +44,8 @@ class StoreAppointmentAction
     {
         $exists = Doctor::query()
             ->where('id', $doctorId)
-            ->whereHas('clinics', function (\Illuminate\Contracts\Database\Query\Builder $q) use ($clinicId): void {
-                $q->where('clinics.id', $clinicId);
+            ->whereHas('clinics', function (Builder $q) use ($clinicId): void {
+                $q->whereRelation('clinics', 'id', $clinicId);
             })
             ->exists();
         if (! $exists) {
@@ -62,27 +55,19 @@ class StoreAppointmentAction
 
     private function checkOverlapping(AppointmentDto $dto, CarbonImmutable $startsAt, CarbonImmutable $endsAt): void
     {
-        $doctorOverlapping = Appointment::query()
-            ->where('doctor_id', $dto->doctorId)
-            ->where(function (Builder $query) use ($startsAt, $endsAt): void {
-                $query->where('starts_at', '<', $endsAt)
+        $anyOverlapping = Appointment::query()
+            ->where(function (Builder $q) use ($dto): void {
+                $q->where('doctor_id', $dto->doctorId)
+                    ->orWhere('user_id', $dto->userId);
+            })
+            ->where(function (Builder $q) use ($startsAt, $endsAt): void {
+                $q->where('starts_at', '<', $endsAt)
                     ->where('ends_at', '>', $startsAt);
             })
             ->exists();
 
-        if ($doctorOverlapping) {
-            throw new RuntimeException('The doctor already has an overlapping appointment.');
-        }
-        $patientOverlapping = Appointment::query()
-            ->where('user_id', $dto->userId)
-            ->where(function (Builder $query) use ($startsAt, $endsAt): void {
-                $query->where('starts_at', '<', $endsAt)
-                    ->where('ends_at', '>', $startsAt);
-            })
-            ->exists();
-
-        if ($patientOverlapping) {
-            throw new RuntimeException('The patient already has an overlapping appointment.');
+        if ($anyOverlapping) {
+            throw new RuntimeException('There is an overlapping appointment for the given doctor or patient.');
         }
     }
 }

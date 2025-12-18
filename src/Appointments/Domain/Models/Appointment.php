@@ -15,8 +15,8 @@ class Appointment extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'starts_at' => 'datetime',
-        'ends_at' => 'datetime',
+        'starts_at' => 'immutable_datetime',
+        'ends_at' => 'immutable_datetime',
     ];
 
     /**

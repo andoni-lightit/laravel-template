@@ -105,7 +105,7 @@ Route::prefix('clinics')->group(static function (): void {
 
 /*
 |--------------------------------------------------------------------------
-| Clinics Routes
+| Appointment Routes
 |--------------------------------------------------------------------------
 */
 Route::prefix('appointments')->group(static function (): void {

@@ -6,12 +6,15 @@ namespace Lightit\Appointments\Domain\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Lightit\Clinics\Domain\Models\Clinic;
 use Lightit\Doctors\Domain\Models\Doctor;
 use Lightit\Users\Domain\Models\User;
 
 class Appointment extends Model
 {
+    use SoftDeletes;
+
     protected $guarded = ['id'];
 
     protected $casts = [

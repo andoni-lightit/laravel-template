@@ -30,9 +30,10 @@ use Lightit\Clinics\App\Controllers\{
 };
 
 use Lightit\Appointments\App\Controllers\{
+    DeleteAppointmentController,
+    ListAppointmentController,
     StoreAppointmentController
 };
-
 
 /*
 |--------------------------------------------------------------------------
@@ -109,5 +110,10 @@ Route::prefix('clinics')->group(static function (): void {
 |--------------------------------------------------------------------------
 */
 Route::prefix('appointments')->group(static function (): void {
+    Route::get('/', ListAppointmentController::class);
     Route::post('/', StoreAppointmentController::class);
+
+    Route::prefix('{appointment}')->group(static function (): void {
+        Route::delete('/', DeleteAppointmentController::class);
+    })->whereNumber('appointment');
 });

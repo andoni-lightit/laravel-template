@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notification;
 use Lightit\Clinics\Domain\Models\Clinic;
 use Lightit\Doctors\Domain\Models\Doctor;
 use Lightit\Users\Domain\Models\User;
+use RuntimeException;
 
 class Appointment extends Model
 {
@@ -56,6 +57,12 @@ class Appointment extends Model
      */
     public function routeNotificationForMail(Notification $notification): array|string
     {
-        return $this->user->email;
+        $user = $this->user;
+
+        if (! $user) {
+            throw new RuntimeException('User is not set.');
+        }
+
+        return $user->email;
     }
 }

@@ -32,6 +32,7 @@ use Lightit\Clinics\App\Controllers\{
 use Lightit\Appointments\App\Controllers\{
     DeleteAppointmentController,
     ListAppointmentController,
+    ListMyAppointmentsController,
     StoreAppointmentController
 };
 
@@ -53,12 +54,14 @@ use Lightit\Authentication\App\Controllers\{
 |
 */
 
-Route::middleware('auth:sanctum')
+Route::middleware('auth')
     ->get('/me', fn(
         #[CurrentUser] $user
     ) => response()->json([
         'data' => $user,
     ]));
+
+ Route::get('/me/appointments', ListMyAppointmentsController::class);
 
 /*
 |--------------------------------------------------------------------------

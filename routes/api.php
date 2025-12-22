@@ -35,6 +35,13 @@ use Lightit\Appointments\App\Controllers\{
     StoreAppointmentController
 };
 
+use Lightit\Authentication\App\Controllers\{
+    LoginController,
+    RefreshController,
+    LogoutController,
+};
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -109,7 +116,7 @@ Route::prefix('clinics')->group(static function (): void {
 | Appointment Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('appointments')->group(static function (): void {
+Route::prefix('appointments')->middleware(['auth'])->group(static function (): void {
     Route::get('/', ListAppointmentController::class);
     Route::post('/', StoreAppointmentController::class);
 
@@ -117,3 +124,18 @@ Route::prefix('appointments')->group(static function (): void {
         Route::delete('/', DeleteAppointmentController::class);
     })->whereNumber('appointment');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('auth')->group(static function (): void {
+    Route::post('login', LoginController::class);
+
+    Route::middleware(['auth'])->group(static function (): void {
+        Route::post('logout', LogoutController::class);
+        Route::post('refresh', RefreshController::class);
+    });
+});
+

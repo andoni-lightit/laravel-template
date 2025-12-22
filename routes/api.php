@@ -61,7 +61,8 @@ Route::middleware('auth')
         'data' => $user,
     ]));
 
- Route::get('/me/appointments', ListMyAppointmentsController::class);
+Route::middleware('auth')
+    ->get('/me/appointments', ListMyAppointmentsController::class);
 
 /*
 |--------------------------------------------------------------------------

@@ -45,7 +45,7 @@ class StoreAppointmentAction
         $exists = Doctor::query()
             ->where('id', $doctorId)
             ->whereHas('clinics', function (Builder $q) use ($clinicId): void {
-                $q->whereRelation('clinics', 'id', $clinicId);
+                $q->where('id', $clinicId);
             })
             ->exists();
         if (! $exists) {

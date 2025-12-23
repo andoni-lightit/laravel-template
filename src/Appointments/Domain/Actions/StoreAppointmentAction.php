@@ -6,6 +6,7 @@ namespace Lightit\Appointments\Domain\Actions;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
+use Lightit\Appointments\App\Notifications\AppointmentCreatedNotification;
 use Lightit\Appointments\Domain\DataTransferObjects\AppointmentDto;
 use Lightit\Appointments\Domain\Models\Appointment;
 use Lightit\Doctors\Domain\Models\Doctor;
@@ -35,9 +36,13 @@ class StoreAppointmentAction
         $appointment->clinic_id = $clinicId;
         $appointment->starts_at = $startsAt;
         $appointment->ends_at = $endsAt;
-        $appointment->saveOrFail();
 
-        return $appointment->load('doctor', 'clinic');
+        $appointment->saveOrFail();
+        $appointment->load('doctor', 'clinic');
+
+        $appointment->notify(new AppointmentCreatedNotification());
+
+        return $appointment;
     }
 
     private function checkRelatedResources(int $doctorId, int $clinicId): void

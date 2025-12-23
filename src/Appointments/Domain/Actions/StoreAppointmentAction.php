@@ -10,7 +10,9 @@ use Lightit\Appointments\App\Notifications\AppointmentCreatedNotification;
 use Lightit\Appointments\Domain\DataTransferObjects\AppointmentDto;
 use Lightit\Appointments\Domain\Models\Appointment;
 use Lightit\Doctors\Domain\Models\Doctor;
-use RuntimeException;
+
+
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class StoreAppointmentAction
 {
@@ -54,7 +56,7 @@ class StoreAppointmentAction
             })
             ->exists();
         if (! $exists) {
-            throw new RuntimeException('The selected clinic is not assigned to the given doctor.');
+            throw new UnprocessableEntityHttpException('The selected clinic is not assigned to the given doctor.');
         }
     }
 
@@ -72,7 +74,7 @@ class StoreAppointmentAction
             ->exists();
 
         if ($anyOverlapping) {
-            throw new RuntimeException('There is an overlapping appointment for the given doctor or patient.');
+            throw new UnprocessableEntityHttpException('There is an overlapping appointment for the given doctor or patient.');
         }
     }
 }
